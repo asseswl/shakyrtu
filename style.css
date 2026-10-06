@@ -689,11 +689,11 @@ main{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
 .hero-bg::after{display:none}
 .hero-bg::before{
   content:"";position:absolute;inset:0;
-  background:url(hero-m.jpg) center bottom/100% auto no-repeat;
+  background:url('hero-m.jpg') center bottom/100% auto no-repeat;
   -webkit-mask-image:linear-gradient(transparent,#000 14%);mask-image:linear-gradient(transparent,#000 14%);
 }
 @media (min-aspect-ratio:1/1){
-  .hero-bg::before{background-image:url(hero.jpg)}
+  .hero-bg::before{background-image:url('hero.jpg')}
 }
 .br{display:none}                                  /* ветки теперь нарисованы на самом фото */
 .hero .names{--base:#a9742f}
