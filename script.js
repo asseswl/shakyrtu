@@ -3,12 +3,13 @@ const CONFIG = {
   weddingDate: "2026-11-11T18:00:00+05:00",  // дата и время тоя (Алматы +05:00)
   dateText: "11.11 2026",
   name1: "Заманбек",                          // бірінші (жігіт)
-  name2: "Света",                          // екінші (қалыңдық)
+  name2: "Светлана",                          // екінші (қалыңдық)
   venue: "Samir Meiramhanasy",
-  address: "Егінсу көшесі, 29/11",
-  addressLink: "https://2gis.kz/almaty/geo/70030076168480807",
-  lat: 43.177428, lon: 76.801661,             // координаты места (для карты и всех кнопок)
-  mapLink: "https://go.2gis.com/33WKg",
+  address: "Егінсу көшесі, 29/11а",
+  addressLink: "https://2gis.kz/almaty/search/%D2%AE%D0%BB%D0%B8%D1%86%D0%B0%20%D0%95%D0%B3%D0%B8%D0%BD%D1%81%D1%83%2C%2029%2F11%D0%B0",
+  mapLink: "https://2gis.kz/almaty/search/%D2%AE%D0%BB%D0%B8%D1%86%D0%B0%20%D0%95%D0%B3%D0%B8%D0%BD%D1%81%D1%83%2C%2029%2F11%D0%B0",
+  yandexLink: "https://yandex.com/maps/-/CXewmYjJ",
+  lat: 43.177428, lon: 76.801661,             // координаты точки на карте (из ссылки Яндекса)
   heroPhoto: "",                              // напр. "img/hero.jpg"
   music: "",                                  // напр. "audio/music.mp3"
   whatsapp: ""                                // номер без +, напр. "77011234567"
@@ -18,12 +19,12 @@ const $ = id => document.getElementById(id);
 $("n1").textContent = CONFIG.name1; $("n2").textContent = CONFIG.name2;
 $("dateText").textContent = CONFIG.dateText;
 $("venueName").textContent = CONFIG.venue;
-$("addr").textContent = CONFIG.address; $("addr").href = CONFIG.addressLink;
 if (CONFIG.heroPhoto) document.documentElement.style.setProperty("--photo-hero", `url(${CONFIG.heroPhoto})`);
 $("b2gis").href = CONFIG.mapLink;
+const mapQuery = encodeURIComponent(`${CONFIG.address}, Алматы`);
 $("bgoogle").href = `https://www.google.com/maps/search/?api=1&query=${CONFIG.lat},${CONFIG.lon}`;
-$("byandex").href = `https://yandex.com/maps/?pt=${CONFIG.lon},${CONFIG.lat}&z=17&l=map`;
-$("map").src = `https://yandex.com/map-widget/v1/?ll=${CONFIG.lon}%2C${CONFIG.lat}&z=17&pt=${CONFIG.lon}%2C${CONFIG.lat}%2Cpm2dgm`; /* карта Яндекс на сайте */
+$("byandex").href = CONFIG.yandexLink;
+$("map").src = `https://yandex.com/map-widget/v1/?ll=${CONFIG.lon}%2C${CONFIG.lat}&z=17&pt=${CONFIG.lon},${CONFIG.lat},pm2rdl`; /* карта Яндекс на сайте */
 
 /* появление при прокрутке */
 const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .15 });
