@@ -12,7 +12,8 @@ const CONFIG = {
   lat: 43.177428, lon: 76.801661,             // координаты точки на карте (из ссылки Яндекса)
   heroPhoto: "",                              // напр. "img/hero.jpg"
   music: "",                                  // напр. "audio/music.mp3"
-  whatsapp: ""                                // номер без +, напр. "77011234567"
+  whatsapp: "",                               // номер без +, напр. "77011234567"
+  googleSheetsUrl: "https://script.google.com/macros/s/AKfycbyhxYyU-HV2_1g-tl6_DRBFMQS_Ayn2i1LqeJTWFGiiL0k2N3RI_0kpITQVcMg28Dj1nA/exec"
 };
 /* ============================================ */
 const $ = id => document.getElementById(id);
@@ -157,12 +158,47 @@ function openInvitation() {
 openBtn.onclick = openInvitation;
 
 /* RSVP: отправка в WhatsApp (или просто подтверждение, если номер не указан) */
-$("rsvp").onsubmit = e => {
+$("rsvp").onsubmit = async e => {
   e.preventDefault();
-  const ans = document.querySelector('input[name=a]:checked').value;
-  const going = ans.startsWith("Иә"), pair = going ? " (" + document.querySelector('input[name=p]:checked').value + ")" : "";
-  if (CONFIG.whatsapp) window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent($("guest").value + " — " + ans + pair)}`, "_blank");
+
+  const guest = $("guest").value.trim();
+  const ansEl = document.querySelector('input[name=a]:checked');
+  const pairEl = document.querySelector('input[name=p]:checked');
+
+  if (!guest || !ansEl || (ansEl.value.startsWith("Иә") && !pairEl)) {
+    alert("Толық ақпаратты таңдаңыз");
+    return;
+  }
+
+  const ans = ansEl.value;
+  const going = ans.startsWith("Иә");
+  const pair = going ? " (" + pairEl.value + ")" : "";
+
+  if (CONFIG.googleSheetsUrl) {
+    try {
+      await fetch(CONFIG.googleSheetsUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {"Content-Type": "text/plain;charset=utf-8"},
+        body: JSON.stringify({
+          guest: guest,
+          attend: ans,
+          pair: going ? pairEl.value : "",
+          submittedAt: new Date().toISOString()
+        })
+      });
+    } catch (err) {
+      console.error("Google Sheets:", err);
+    }
+  }
+
+  if (CONFIG.whatsapp) {
+    window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(guest + " — " + ans + pair)}`, "_blank");
+  }
+
   $("ok").hidden = false;
+  $("rsvp").reset();
+  $("pairBox").hidden = true;
 };
 
 /* выбор «вдвоём» показываем только тем, кто придёт */
