@@ -11,7 +11,7 @@ const CONFIG = {
   yandexLink: "https://yandex.com/maps/-/CXewmYjJ",
   lat: 43.177428, lon: 76.801661,             // координаты точки на карте (из ссылки Яндекса)
   heroPhoto: "",                              // напр. "img/hero.jpg"
-  music: "",                                  // напр. "audio/music.mp3"
+  music: "music.mp3",                                  // напр. "audio/music.mp3"
   whatsapp: "",                               // номер без +, напр. "77011234567"
   googleSheetsUrl: "https://script.google.com/macros/s/AKfycbyhxYyU-HV2_1g-tl6_DRBFMQS_Ayn2i1LqeJTWFGiiL0k2N3RI_0kpITQVcMg28Dj1nA/exec"
 };
@@ -53,6 +53,7 @@ tick(); setInterval(tick, 1000);
 
 /* музыка */
 const a = $("bgm"), mb = $("musicBtn");
+a.volume = 0.6;
 if (CONFIG.music) a.src = CONFIG.music; else mb.hidden = true;
 function setMusic(on) {
   if (!CONFIG.music) return;
