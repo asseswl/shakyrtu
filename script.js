@@ -53,7 +53,7 @@ tick(); setInterval(tick, 1000);
 
 /* музыка */
 const a = $("bgm"), mb = $("musicBtn");
-a.volume = 0.6;
+a.volume = 0.5;
 if (CONFIG.music) a.src = CONFIG.music; else mb.hidden = true;
 function setMusic(on) {
   if (!CONFIG.music) return;
